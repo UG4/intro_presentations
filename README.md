@@ -21,6 +21,7 @@ The idea is that one presentation is used for a 1.5-hour class, with some practi
 Currently available presentations:
 - Installation and Architecture (UG4-1-Installation)
 - ug4: Example of a Simulation (UG4-2-SimExample, supp. materials in UG4-2-SimExample_supp)
+- Solvers in ug4 (UG4-3-Solver, supp. materials in UG4-3-Solver_supp)
 
 ## The Long presentations
 
