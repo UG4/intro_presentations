@@ -12,7 +12,8 @@ PDFFILE = $(FILENAME).pdf
 SOURCES = $(TEXFILE)
 
 # Pictures:
-PICTURES =
+PICTURES = Discretization.pdf FV-Elem-Donald-Scheme.pdf FV-Elem-Donald.pdf FV-Elem-Donald-bnd.pdf \
+	bilinear-geometric.pdf Circle-lev0.png Circle-lev1.png Circle-lev2.png Circle-phi.png
 
 $(PDFFILE): $(SOURCES) $(PICTURES)
 	pdflatex $(TEXFILE)
