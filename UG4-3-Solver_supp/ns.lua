@@ -1,6 +1,7 @@
 -- Navier-Stokes equation, 2d
 -- Discretization: Vertex-centered, stabilized
 --
+-- Created for AMFS 2020
 -- D. Logashenko
 
 -- Load utility scripts (e.g. from from ugcore/scripts)
@@ -16,15 +17,19 @@ viscosity 	= util.GetParamNumber("-visc", 1e-3, "kinematic viscosity")
 inflow		= util.GetParamNumber("-inflow", 0.5, "max. inflow velocity")
 bStokes 	= util.HasParamOption("-Stokes", "If defined, only Stokes Eq. computed")
 
--- Numerical parameters
+-- Numerical parameters of the discretization
 numRefs 	= util.GetParamNumber("-numRefs", 2, "number of grid refinements")
 numPreRefs 	= util.GetParamNumber("-numPreRefs", 0, "number of prerefinements (parallel)")
+bNoLaplace 	= util.HasParamOption("-noLaplace", "If defined, only laplace term used")
+bExactJac 	= util.HasParamOption("-exactJac", "If defined, exact jacobian used")
 bPecletBlend= util.HasParamOption("-PecletBlend", "If defined, Peclet Blend used")
-upwind      = util.GetParam("-upwind", "lps", "Upwind type")
+upwind      = util.GetParam("-upwind", "lps", "Upwind type (no, full, weighted, lps, pos, reg)")
 bPac        = util.HasParamOption("-pac", "If defined, pac upwind used")
 stab        = util.GetParam("-stab", "fields", "Stabilization type (fields or flow)")
 diffLength  = util.GetParam("-difflength", "cor", "Diffusion length type (raw, fivepoint or cor)")
 
+-- Parameters of the solver
+ilu_beta	= util.GetParamNumber("-iluBeta", -0.2, "choose a negative value depending on the convection rate")
 ------------------------------------------------------------------------------------------
 -- Geometry data
 ------------------------------------------------------------------------------------------
@@ -45,14 +50,18 @@ print (" Physical parameter:")
 print ("    visc		= " .. viscosity)
 print ("    inflow		= " .. inflow)
 print ("    Stokes		= " .. tostring (bStokes))
-print (" Numerical parameter:")
+print (" Numerical parameter of the discretization:")
 print ("    numRefs		= " .. numRefs)
 print ("    numPreRefs	= " .. numPreRefs)
+print ("	noLaplace	= " .. tostring (bNoLaplace))
+print ("	exactJac	= " .. tostring (bExactJac))
 print ("    PecletBlend = " .. tostring (bPecletBlend))
 print ("    upwind		= " .. upwind)
 print ("    pac			= " .. tostring (bPac))
 print ("    stab		= " .. stab)
 print ("    difflength	= " .. diffLength)
+print (" Numerical parameter of the solvers:")
+print ("    iluBeta		= " .. ilu_beta)
 
 ------------------------------------------------------------------------------------------
 -- Initialize UG4, load, refine and distribute the grid
@@ -83,7 +92,9 @@ util.solver.defaults.approxSpace = approxSpace
 
 -- inner space
 NavierStokesDisc = NavierStokesFV1 ({"u", "v", "p"}, {"Inner"})
+NavierStokesDisc:set_exact_jacobian (bExactJac)
 NavierStokesDisc:set_stokes (bStokes)
+NavierStokesDisc:set_laplace ( not(bNoLaplace) )
 NavierStokesDisc:set_kinematic_viscosity (viscosity)
 NavierStokesDisc:set_upwind (upwind)
 NavierStokesDisc:set_peclet_blend (bPecletBlend)
@@ -92,8 +103,11 @@ NavierStokesDisc:set_pac_upwind (bPac)
 
 -- boundary condition at the inlet
 inflow_R = (inflow_y_1 - inflow_y_0) / 2
+function inflowVel_u (x, y, t)
+	return inflow * (inflow_y_1 - y) * (y - inflow_y_0) / (inflow_R * inflow_R)
+end
 function inflowVel2d (x, y, t)
-	return inflow * (inflow_y_1 - y) * (y - inflow_y_0) / (inflow_R * inflow_R), 0.0
+	return inflowVel_u (x, y, t), 0.0
 end
 InletDisc = NavierStokesInflow (NavierStokesDisc)
 InletDisc:add ("inflowVel2d", "Inlet")
@@ -133,7 +147,8 @@ solverDesc =
 			smoother =
 			{
 				type = "ilu",
-				beta = -0.2
+				beta = ilu_beta,
+				consistentInterfaces = true
 			},
 			preSmooth = 1,
 			postSmooth = 1,
@@ -145,14 +160,14 @@ solverDesc =
 			type		= "standard",
 			iterations	= 128,
 			absolute	= 1e-12,
-			reduction	= 1e-10,
+			reduction	= 0.5e-8,
 			verbose		= true
 		}
 	},
 	lineSearch =
 	{
 		type			= "standard",
-		maxSteps		= 10,
+		maxSteps		= 5,
 		lambdaStart		= 1,
 		lambdaReduce	= 0.5,
 		acceptBest 		= true,
@@ -161,9 +176,9 @@ solverDesc =
 	convCheck =
 	{
 		type		= "standard",
-		iterations	= 64,
+		iterations	= 256,
 		absolute	= 2.5e-12,
-		reduction	= 2.5e-10,
+		reduction	= 1e-8,
 		verbose		= true
 	}
 }
@@ -176,9 +191,13 @@ solver = util.solver.CreateSolver(solverDesc)
 
 -- grid function for the solution
 u = GridFunction (approxSpace)
-u:set (0)
 
--- Order the DoFs:
+-- set the initial guess
+u:set (0)
+Interpolate (inflowVel_u, u, "u")
+
+-- order the DoFs:
+--OrderCuthillMcKee (approxSpace, true)
 OrderLex (approxSpace,  "x")
 
 -- initialize the solver
