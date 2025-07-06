@@ -1,0 +1,33 @@
+% Conclusion
+
+\begin {frame} [t]
+\frametitle {Conclusions}
+\begin {itemize}
+ \item Ug4 provides an efficient implementation of the monolithic coupling approach.
+ \item However, monolithic coupling does not allow some widely used options like
+  switching on/off equations in subdomains.
+ \item Implemented approach does not exclude other methods of coupling.
+\end {itemize}
+
+\pause
+\vspace{4ex}
+\textbf{\color{blue} Remark:} For discretized monolithically coupled systems, application
+of the \emph{\color{blue} point-block} version of the linear solvers can be essential.
+Consider using the CPU-Algebra with the number of the components equal to the number
+of unknowns.
+\end {frame}
+
+\begin {frame} [t]
+\frametitle {References}
+\begin {itemize}
+ \item A. Vogel, Flexible und kombinierbare Implementierung von Finite-Volumen-Verfahren
+  h{\" o}herer Ordnung, PhD Thesis, Frankfurt University, 2014
+ \item Doxygen documentation in ug4
+ \item elder\_bq.lua script in the Examples application
+\end {itemize}
+
+\vspace {15ex}
+\centerline {\huge \textbf {\color{blue} Thank you for your attention!}}
+\end {frame}
+
+% End of File

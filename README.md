@@ -16,7 +16,7 @@ There are two types of the presentations: A course of short presentations and a 
 
 ## The course of short presentations
 
-The idea is that one presentation is used for a 1.5-hour class, with some practice using provides scripts. The scripts are located in separate folders named like the presentation but with the suffix "_supp"
+The idea is that one presentation is used for a 1.5-hour class, with some practice using provides scripts. The scripts are located in separate folders named like the presentation but with the suffix "_supp".
 
 Currently available presentations:
 - Installation and Architecture (UG4-1-Installation)
@@ -26,3 +26,5 @@ Currently available presentations:
 ## The Long presentations
 
 Currently available presentations:
+
+- Numerical solution of coupled PDEs with ug4 (UG4-DiscCoupling)

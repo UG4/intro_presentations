@@ -1,0 +1,55 @@
+% Technical information about the coupling interfaces of ug4
+
+\documentclass[xcolor=dvipsnames]{beamer}
+
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath, amsfonts, amssymb}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{setspace}
+
+\usetheme{Copenhagen}
+\usecolortheme[named=YellowOrange]{structure}
+
+%\usefonttheme{default}
+\usefonttheme {structurebold}
+\useinnertheme{default}
+\useoutertheme{default}
+\setbeamertemplate{headline}[default]
+
+\newcommand*\oldmacro{}%
+\let\oldmacro\insertshorttitle%
+\renewcommand*\insertshorttitle{%
+  \oldmacro\hfill%
+  \insertframenumber\,/\,\inserttotalframenumber}
+
+\title
+ [ug4: Coupling equations]
+ {Numerical solution of \\ coupled PDEs with ug4}
+\author [D. Logashenko] {Dmitry Logashenko}
+\institute [CEMSE]
+{CEMSE, KAUST, Saudi Arabia}
+\date [Jul. 2025] {July 2025}
+
+\begin{document}
+
+\frame {\titlepage}
+
+\begin {frame} [t]
+\frametitle {Contents}
+\tableofcontents
+\end {frame}
+
+\input {ddf_model}
+
+\input {disc_basics}
+
+\input {ug4_disc}
+
+\input {coupling}
+
+\input {conclusion}
+
+\end{document}
+
+% End of File
