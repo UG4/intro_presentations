@@ -6,39 +6,40 @@ on: [workflow_dispatch]
 
 jobs:
 
-	compile-latex-to-pdf:
-		runs-on: ubuntu-latest
-		
-		steps:
-		- name: Set up git repository
-		  uses: actions/checkout@v4
-		- name: Build UG4-1-Installation
-		  uses: xu-cheng/latex-action@v4
-		  with:
-		  	working_directory: UG4-1-Installation
-		  	root_file: LDL-UG4-1-Installation.tex
-		- name: Build UG4-2-SimExample
-		  uses: xu-cheng/latex-action@v4
-		  with:
-		  	working_directory: UG4-2-SimExample
-		  	root_file: LDL-UG4-2-SimExample.tex
-		- name: Build UG4-3-Solver
-		  uses: xu-cheng/latex-action@v4
-		  with:
-		  	working_directory: UG4-3-Solver
-		  	root_file: LDL-UG4-3-Solver.tex
-		- name: Build UG4-DiscCoupling
-		  uses: xu-cheng/latex-action@v4
-		  with:
-		  	working_directory: UG4-DiscCoupling
-		  	root_file: LDL-UG4-DiscCoupling.tex
-		- name: Upload PDFs of the presentations
-		  uses: actions/upload-artifact@v4
-		  with:
-		  path: |
-		  	UG4-1-Installation/LDL-UG4-1-Installation.pdf
-		  	UG4-2-SimExample/LDL-UG4-2-SimExample.pdf
-		  	UG4-3-Solver/LDL-UG4-3-Solver.pdf
-		  	UG4-DiscCoupling/LDL-UG4-DiscCoupling.pdf
-		  	
+  compile-latex-to-pdf:
+    name: Generating presentations
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Set up git repository
+        uses: actions/checkout@v4
+      - name: Build UG4-1-Installation
+        uses: xu-cheng/latex-action@v4
+        with:
+          working_directory: UG4-1-Installation
+          root_file: LDL-UG4-1-Installation.tex
+      - name: Build UG4-2-SimExample
+        uses: xu-cheng/latex-action@v4
+        with:
+          working_directory: UG4-2-SimExample
+          root_file: LDL-UG4-2-SimExample.tex
+      - name: Build UG4-3-Solver
+        uses: xu-cheng/latex-action@v4
+        with:
+          working_directory: UG4-3-Solver
+          root_file: LDL-UG4-3-Solver.tex
+      - name: Build UG4-DiscCoupling
+        uses: xu-cheng/latex-action@v4
+        with:
+          working_directory: UG4-DiscCoupling
+          root_file: LDL-UG4-DiscCoupling.tex
+      - name: Upload PDFs of the presentations
+        uses: actions/upload-artifact@v4
+        with:
+          path: |
+            UG4-1-Installation/LDL-UG4-1-Installation.pdf
+            UG4-2-SimExample/LDL-UG4-2-SimExample.pdf
+            UG4-3-Solver/LDL-UG4-3-Solver.pdf
+            UG4-DiscCoupling/LDL-UG4-DiscCoupling.pdf
+
 # End of File
