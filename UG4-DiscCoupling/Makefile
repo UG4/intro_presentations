@@ -3,7 +3,7 @@
 # Jul. 6, 2025
 
 # Base of the file names:
-FILENAME = LDL-UG4-disc-coupling
+FILENAME = LDL-UG4-DiscCoupling
 
 TEXFILE = $(FILENAME).tex
 PDFFILE = $(FILENAME).pdf
