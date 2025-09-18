@@ -1,18 +1,6 @@
 # LaTeX sources of introductory presentations to ug4
 
-This repository contains sources of presentation of an introductory course to ug4. Every presentation is located in a separate folder. To create the pdf file, you need a working LaTeX installation and the make utility. Enter the folder of the presentation and run
-
-make
-
-To clean the auxiliary LaTeX files, run
-
-make clean
-
-To delete all the created files (including the pdf file of the presentation), run
-
-make cleanall
-
-There are two types of the presentations: A course of short presentations and a couple of long presentations with more detailed overviews. Whereas the former are prepared for beginners and (some of them) have supplementary materials (scripts and geometries) for some practice, the latter are devoted either to all-in-one reviews or explanations of particular features.
+This repository contains sources of presentations of an introductory course to ug4. There are two types of the presentations: A course of short presentations and a couple of long presentations with more detailed overviews. Whereas the former are prepared for beginners and (some of them) have supplementary materials (scripts and geometries) for some practice, the latter are devoted either to all-in-one reviews or explanations of particular features.
 
 ## The course of short presentations
 
@@ -28,3 +16,23 @@ Currently available presentations:
 Currently available presentations:
 
 - Numerical solution of coupled PDEs with ug4 (UG4-DiscCoupling)
+
+## Generating the PDF files of the presentations
+
+To generate the pdf files of the presentations locally on your computer, you need a working LaTeX installation and the make utility. To compile all the presentations, run
+
+make
+
+in the main directory of the repository. The presentations (as pdf files) are then placed in the All-Slides folder.
+
+Every presentation is located in a separate folder. To create the pdf file of a particular presentation, go to its folder and and run
+
+make
+
+To clean the auxiliary LaTeX files in this folder, run
+
+make clean
+
+To delete all the created files there (including the pdf file of the presentation), run
+
+make cleanall
