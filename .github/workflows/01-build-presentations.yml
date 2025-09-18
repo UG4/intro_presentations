@@ -2,7 +2,7 @@ name: Build PDF files
 
 # workflow_dispatch: Allows to run this workflow manually from the Actions tab
 # push: On every git push
-on: [workflow_dispatch]
+on: push
 
 jobs:
 
